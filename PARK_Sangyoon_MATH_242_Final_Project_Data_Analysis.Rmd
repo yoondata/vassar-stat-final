@@ -1,0 +1,445 @@
+**Final Project (Data Analysis)**
+=====================================================
+*Sangyoon Park / MATH 242*
+-----------------------------------------------------
+
+
+
+### Loading the Data
+```{r}
+# We use the previously prepared dataset
+data <- read.csv("final_data_PARK.csv")
+```
+
+
+### Exploratory Analysis: Univariate
+```{r}
+
+# gender
+num_male <- nrow(data[data$GENDER==0,])
+num_female <- nrow(data[data$GENDER==1,])
+slices_gender <- c(num_male, num_female) 
+lbls_gender <- c("Male", "Female")
+pct_gender <- round(slices_gender / sum(slices_gender) * 100)
+lbls_gender <- paste(lbls_gender, pct_gender) # add percents to labels
+lbls_gender <- paste(lbls_gender, "%", sep="") # add % to labels 
+pie(slices_gender, labels=lbls_gender, col=c("blue", "orange"), main="Gender")
+
+
+# current marital status
+num_married_no <- nrow(data[data$MARRIED==0,])
+num_married_yes <- nrow(data[data$MARRIED==1,])
+slices_married <- c(num_married_no, num_married_yes) 
+lbls_married <- c("Not Married", "Married")
+pct_married <- round(slices_married / sum(slices_married) * 100)
+lbls_married <- paste(lbls_married, pct_married) # add percents to labels
+lbls_married <- paste(lbls_married, "%", sep="") # add % to labels 
+pie(slices_married, labels=lbls_married, col=c("red", "green"), main="Current Marital Status")
+
+
+# STD
+num_STD_no <- nrow(data[data$STD==0,])
+num_STD_yes <- nrow(data[data$STD==1,])
+slices_STD <- c(num_STD_no, num_STD_yes) 
+lbls_STD <- c("No", "Yes")
+pct_STD <- round(slices_STD / sum(slices_STD) * 100)
+lbls_STD <- paste(lbls_STD, pct_STD) # add percents to labels
+lbls_STD <- paste(lbls_STD, "%", sep="") # add % to labels 
+pie(slices_STD, labels=lbls_STD, col=c("white", "black"), main="Ever diagnosed with STD?")
+
+
+# drug
+num_drug_no <- nrow(data[data$DRUG==0,])
+num_drug_yes <- nrow(data[data$DRUG==1,])
+slices_drug <- c(num_drug_no, num_drug_yes) 
+lbls_drug <- c("No", "Yes")
+pct_drug <- round(slices_drug / sum(slices_drug) * 100)
+lbls_drug <- paste(lbls_drug, pct_drug) # add percents to labels
+lbls_drug <- paste(lbls_drug, "%", sep="") # add % to labels 
+pie(slices_drug, labels=lbls_drug, col=c("red", "green"), main="Ever used any illegal drug?")
+
+
+# injection
+num_inject_no <- nrow(data[data$INJECT==0,])
+num_inject_yes <- nrow(data[data$INJECT==1,])
+slices_inject <- c(num_inject_no, num_inject_yes) 
+lbls_inject <- c("No", "Yes")
+pct_inejct <- round(slices_inject / sum(slices_inject) * 100)
+lbls_inject <- paste(lbls_inject, pct_inejct) # add percents to labels
+lbls_inject <- paste(lbls_inject, "%", sep="") # add % to labels 
+pie(slices_inject, labels=lbls_inject, col=c("red", "green"), main="Ever used a needle to inject illegal drug?")
+
+
+# heavy drinking experience
+num_alcohol_no <- nrow(data[data$ALCOHOL==0,])
+num_alcohol_yes <- nrow(data[data$ALCOHOL==1,])
+slices_alcohol <- c(num_alcohol_no, num_alcohol_yes)
+lbls_alcohol <- c("No", "Yes")
+pct_alcohol <- round(slices_alcohol / sum(slices_alcohol) * 100)
+lbls_alcohol <- paste(lbls_alcohol, pct_alcohol) # add percents to labels
+lbls_alcohol <- paste(lbls_alcohol, "%", sep="") # add % to labels 
+pie(slices_alcohol, labels=lbls_alcohol, col=c("red", "green"), main="Ever had 5 or more drinks everyday?")
+
+
+# smoking experience
+num_smoking_no <- nrow(data[data$SMOKING==0,])
+num_smoking_yes <- nrow(data[data$SMOKING==1,])
+slices_smoking <- c(num_smoking_no, num_smoking_yes)
+lbls_smoking <- c("No", "Yes")
+pct_smoking <- round(slices_smoking / sum(slices_smoking) * 100)
+lbls_smoking <- paste(lbls_smoking, pct_smoking) # add percents to labels
+lbls_smoking <- paste(lbls_smoking, "%", sep="") # add % to labels 
+pie(slices_smoking, labels=lbls_smoking, col=c("red", "green"), main="Smoked at least 100 cigarettes in life")
+
+
+# sleep problem
+num_sleep1_no <- nrow(data[data$SLEEP1==0,])
+num_sleep1_yes <- nrow(data[data$SLEEP1==1,])
+slices_sleep1 <- c(num_sleep1_no, num_sleep1_yes)
+lbls_sleep1 <- c("No", "Yes")
+pct_sleep1 <- round(slices_sleep1 / sum(slices_sleep1) * 100)
+lbls_sleep1 <- paste(lbls_sleep1, pct_sleep1) # add percents to labels
+lbls_sleep1 <- paste(lbls_sleep1, "%", sep="") # add % to labels 
+pie(slices_sleep1, labels=lbls_sleep1, col=c("red", "green"), main="Ever told doctor about trouble with sleeping?")
+
+
+# sleep disorder
+num_sleep2_no <- nrow(data[data$SLEEP2==0,])
+num_sleep2_yes <- nrow(data[data$SLEEP2==1,])
+slices_sleep2 <- c(num_sleep2_no, num_sleep2_yes)
+lbls_sleep2 <- c("No", "Yes")
+pct_sleep2 <- round(slices_sleep2 / sum(slices_sleep2) * 100)
+lbls_sleep2 <- paste(lbls_sleep2, pct_sleep2) # add percents to labels
+lbls_sleep2 <- paste(lbls_sleep2, "%", sep="") # add % to labels 
+pie(slices_sleep2, labels=lbls_sleep2, col=c("red", "green"), main="Ever diagnosed with sleep disorder?")
+
+
+# race/ethnicity
+num_race_white <- nrow(data[data$RACE==0,])
+num_race_black <- nrow(data[data$RACE==1,])
+num_race_hispanic <- nrow(data[data$RACE==2,])
+num_race_other <- nrow(data[data$RACE==3,])
+slices_race <- c(num_race_white, num_race_black, num_race_hispanic, num_race_other)
+lbls_race <- c("White", "Black", "Hispanic", "Other")
+pct_race <- round(slices_race / sum(slices_race) * 100)
+lbls_race <- paste(lbls_race, pct_race) # add percents to labels
+lbls_race <- paste(lbls_race, "%", sep="") # add % to labels 
+pie(slices_race, labels=lbls_race, col=c("gray", "black", "brown", "yellow"), main="Race/Ethnicity")
+
+
+# education level
+num_educ_0 <- nrow(data[data$EDUC==0,])
+num_educ_1 <- nrow(data[data$EDUC==1,])
+num_educ_2 <- nrow(data[data$EDUC==2,])
+num_educ_3 <- nrow(data[data$EDUC==3,])
+num_educ_4 <- nrow(data[data$EDUC==4,])
+slices_educ <- c(num_educ_0, num_educ_1, num_educ_2, num_educ_3, num_educ_4)
+lbls_educ <- c("Less than 9th Grade", "9-11th Grade", "High School Grad / GED", "Some College / AA", "College Grad or Above")
+pct_educ <- round(slices_educ / sum(slices_educ) * 100)
+lbls_educ <- paste(lbls_educ, pct_educ) # add percents to labels
+lbls_educ <- paste(lbls_educ, "%", sep="") # add % to labels 
+pie(slices_educ, labels=lbls_educ, col=c("red", "orange", "yellow", "green", "blue"), main="Education Level")
+
+
+# annual family income
+num_income_0 <- nrow(data[data$INCOME==0,])
+num_income_1 <- nrow(data[data$INCOME==1,])
+num_income_2 <- nrow(data[data$INCOME==2,])
+num_income_3 <- nrow(data[data$INCOME==3,])
+slices_income <- c(num_income_0, num_income_1, num_income_2, num_income_3)
+lbls_income <- c("Poverty Level", "Working Class", "Lower Middle Class", "Upper Middle Class")
+pct_income <- round(slices_income / sum(slices_income) * 100)
+lbls_income <- paste(lbls_income, pct_income) # add percents to labels
+lbls_income <- paste(lbls_income, "%", sep="") # add % to labels 
+pie(slices_income, labels=lbls_income, col=c("red", "orange", "green", "blue"), main="Annual Family Income")
+
+
+# recent condom use
+num_condom_never <- nrow(data[data$INCOME==0,])
+num_condom_sometimes <- nrow(data[data$INCOME==1,])
+num_condom_always <- nrow(data[data$INCOME==2,])
+slices_condom <- c(num_condom_never, num_condom_sometimes, num_condom_always)
+lbls_condom <- c("Never", "Sometimes", "Always")
+pct_condom <- round(slices_condom / sum(slices_condom) * 100)
+lbls_condom <- paste(lbls_condom, pct_condom) # add percents to labels
+lbls_condom <- paste(lbls_condom, "%", sep="") # add % to labels 
+pie(slices_condom, labels=lbls_condom, col=c("red", "yellow", "blue"), main="Sex with Condom during Past Year")
+
+
+# age
+mean(data$AGE)
+sd(data$AGE)
+boxplot(data$AGE, main="Age Distribution: Box-plot", ylab="Age")
+hist(data$AGE, main="Age Distribution: Histogram", xlab="Age")
+
+
+# number of sexual partners
+mean(data$PARTNERS)
+sd(data$PARTNERS)
+boxplot(data$PARTNERS, main="Number of Sexual Partners in Lifetime", ylab="Sexual Partners")
+abline(h=150, col="red")
+text(0.5, 200, "150", col="red")
+abline(h=40, col="red")
+text(0.5, 90, "40", col="red")
+sub_partners <- data[data$PARTNERS<=150,]$PARTNERS
+hist(sub_partners, main="Number of Sexual Partners in Lifetime: <=150", xlab="Sexual Partners")
+
+```
+
+
+### Exploratory Analysis: Bivariate
+```{r}
+
+# STD vs. Gender
+tab_gender <- with(data, table(STD, GENDER))
+rownames(tab_gender) = c("No STD", "STD")
+colnames(tab_gender) = c("Male", "Female")
+prop.table(tab_gender, margin=2)
+barplot(prop.table(tab_gender, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Gender", xlab = "Gender")
+box()
+### Add later for better illustration (for other barplots too):
+### legend(locator(1),rownames(tab_gender), fill=c("white","black"))
+
+
+# STD vs. Marital Status
+tab_married <- with(data, table(STD, MARRIED))
+rownames(tab_married) = c("No STD", "STD")
+colnames(tab_married) = c("Not Married", "Married")
+prop.table(tab_married, margin=2)
+barplot(prop.table(tab_married, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Marital Status", xlab = "Marital Status")
+box()
+
+
+# STD vs. Drug Use Experience
+tab_drug <- with(data, table(STD, DRUG))
+rownames(tab_drug) = c("No STD", "STD")
+colnames(tab_drug) = c("No", "Yes")
+prop.table(tab_drug, margin=2)
+barplot(prop.table(tab_drug, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Drug Use Experience", xlab = "Drug Use Experience")
+box()
+
+
+# STD vs. Drug Injection Experience
+tab_inject <- with(data, table(STD, INJECT))
+rownames(tab_inject) = c("No STD", "STD")
+colnames(tab_inject) = c("No", "Yes")
+prop.table(tab_inject, margin=2)
+barplot(prop.table(tab_inject, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Drug Injection Experience", xlab = "Drug Injection Experience")
+box()
+
+
+# STD vs. Heavy Drinking Experience
+tab_alcohol <- with(data, table(STD, ALCOHOL))
+rownames(tab_alcohol) = c("No STD", "STD")
+colnames(tab_alcohol) = c("No", "Yes")
+prop.table(tab_alcohol, margin=2)
+barplot(prop.table(tab_alcohol, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Heavy Drinking Experience", xlab = "Heavy Drinking Experience")
+box()
+
+
+# STD vs. Smoking Experience
+tab_smoking <- with(data, table(STD, SMOKING))
+rownames(tab_smoking) = c("No STD", "STD")
+colnames(tab_smoking) = c("No", "Yes")
+prop.table(tab_smoking, margin=2)
+barplot(prop.table(tab_smoking, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Smoking Experience", xlab = "Smoking Experience")
+box()
+
+
+# STD vs. Sleep Problem
+tab_sleep1 <- with(data, table(STD, SLEEP1))
+rownames(tab_sleep1) = c("No STD", "STD")
+colnames(tab_sleep1) = c("No", "Yes")
+prop.table(tab_sleep1, margin=2)
+barplot(prop.table(tab_sleep1, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Sleep Problem", xlab = "Sleep Problem")
+box()
+
+
+# STD vs. Sleep Disorder
+tab_sleep2 <- with(data, table(STD, SLEEP2))
+rownames(tab_sleep2) = c("No STD", "STD")
+colnames(tab_sleep2) = c("No", "Yes")
+prop.table(tab_sleep2, margin=2)
+barplot(prop.table(tab_sleep2, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Sleep Disorder", xlab = "Sleep Disorder")
+box()
+
+
+# STD vs. Race/Ethnicity
+tab_race <- with(data, table(STD, RACE))
+rownames(tab_race) = c("No STD", "STD")
+colnames(tab_race) = c("White", "Black", "Hispanic", "Other")
+prop.table(tab_race, margin=2)
+barplot(prop.table(tab_race, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Race/Ethnicity", xlab = "Race/Ethnicity")
+box()
+
+
+# STD vs. Education Level
+tab_educ <- with(data, table(STD, EDUC))
+rownames(tab_educ) = c("No STD", "STD")
+colnames(tab_educ) = c("Below 9th", "9th-11th", "High School", "Some College", "College or Above")
+prop.table(tab_educ, margin=2)
+barplot(prop.table(tab_educ, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Education Level", xlab = "Education Level")
+box()
+
+
+# STD vs. Family Income
+tab_income <- with(data, table(STD, INCOME))
+rownames(tab_income) = c("No STD", "STD")
+colnames(tab_income) = c("Poverty Level", "Working Class", "Lower Middle Class", "Upper Middle Class")
+prop.table(tab_income, margin=2)
+barplot(prop.table(tab_income, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Family Income", xlab = "Family Income")
+box()
+
+
+# STD vs. Recent Condom Use
+tab_condom <- with(data, table(STD, CONDOM))
+rownames(tab_condom) = c("No STD", "STD")
+colnames(tab_condom) = c("Never", "Sometimes", "Always")
+prop.table(tab_condom, margin=2)
+barplot(prop.table(tab_condom, margin=2), beside=T, ylim=c(0,1), col=c("white","black"), ylab = "Proportion of STD", main = "STD by Recent Condom Use", xlab = "Recent Condom Use")
+box()
+
+
+# STD vs. Age
+library(Hmisc)
+library(gtools)
+deciles_age <- quantile(data$AGE, prob = seq(0, 1, 0.1))
+data$CUT_AGE <- cut(data$AGE, breaks = deciles_age, include.lowest = TRUE)
+table(data$CUT_AGE)
+# calculating logit p for each decile
+age_deci_1 <- logit(mean(data[data$CUT_AGE=="[20,23]",]$STD))
+age_deci_2 <- logit(mean(data[data$CUT_AGE=="(23,27]",]$STD))
+age_deci_3 <- logit(mean(data[data$CUT_AGE=="(27,31]",]$STD))
+age_deci_4 <- logit(mean(data[data$CUT_AGE=="(31,35]",]$STD))
+age_deci_5 <- logit(mean(data[data$CUT_AGE=="(35,38]",]$STD))
+age_deci_6 <- logit(mean(data[data$CUT_AGE=="(38,42]",]$STD))
+age_deci_7 <- logit(mean(data[data$CUT_AGE=="(42,46]",]$STD))
+age_deci_8 <- logit(mean(data[data$CUT_AGE=="(46,50]",]$STD))
+age_deci_9 <- logit(mean(data[data$CUT_AGE=="(50,53]",]$STD))
+age_deci_10 <- logit(mean(data[data$CUT_AGE=="(53,59]",]$STD))
+# plotting
+logit_age <- c(age_deci_1, age_deci_2, age_deci_3, age_deci_4, age_deci_5, age_deci_6, age_deci_7, age_deci_8, age_deci_9, age_deci_10)
+plot(logit_age, main = "STD vs. Age", xlab = "Deciles for Age", ylab = "STD logit p")
+
+
+# STD vs. Number of Sexual Partners
+deciles_partners <- quantile(data$PARTNERS, prob = seq(0, 1, 0.1))
+data$CUT_PARTNERS <- cut(data$PARTNERS, breaks = deciles_partners, include.lowest = TRUE)
+table(data$CUT_PARTNERS)
+# calculating logit p for each decile
+sex_deci_1 <- logit(mean(data[data$CUT_PARTNERS=="[0,1]",]$STD))
+sex_deci_2 <- logit(mean(data[data$CUT_PARTNERS=="(1,3]",]$STD))
+sex_deci_3 <- logit(mean(data[data$CUT_PARTNERS=="(3,4]",]$STD))
+sex_deci_4 <- logit(mean(data[data$CUT_PARTNERS=="(4,5]",]$STD))
+sex_deci_5 <- logit(mean(data[data$CUT_PARTNERS=="(5,7]",]$STD))
+sex_deci_6 <- logit(mean(data[data$CUT_PARTNERS=="(7,9]",]$STD))
+sex_deci_7 <- logit(mean(data[data$CUT_PARTNERS=="(9,12]",]$STD))
+sex_deci_8 <- logit(mean(data[data$CUT_PARTNERS=="(12,20]",]$STD))
+sex_deci_9 <- logit(mean(data[data$CUT_PARTNERS=="(20,30]",]$STD))
+sex_deci_10 <- logit(mean(data[data$CUT_PARTNERS=="(30,2e+03]",]$STD))
+# plotting
+logit_sex <- c(sex_deci_1, sex_deci_2, sex_deci_3, sex_deci_4, sex_deci_5, sex_deci_6, sex_deci_7, sex_deci_8, sex_deci_9, sex_deci_10)
+plot(logit_sex, main = "STD vs. Number of Sexual Partners", xlab = "Deciles for Number of Sexual Partners", ylab = "STD logit p")
+
+```
+
+
+### Logistic Regression: Unadjusted
+```{r}
+
+# bivariate fitting/analysis for binary predictor variables
+fit_gender <- glm(STD ~ GENDER, data = data, family = binomial)
+fit_married <- glm(STD ~ MARRIED, data = data, family = binomial)
+fit_drug <- glm(STD ~ DRUG, data = data, family = binomial)
+fit_inject <- glm(STD ~ INJECT, data = data, family = binomial)
+fit_alcohol <- glm(STD ~ ALCOHOL, data = data, family = binomial)
+fit_smoking <- glm(STD ~ SMOKING, data = data, family = binomial)
+fit_sleep1 <- glm(STD ~ SLEEP1, data = data, family = binomial)
+fit_sleep2 <- glm(STD ~ SLEEP2, data = data, family = binomial)
+summary(fit_gender)
+summary(fit_married)
+summary(fit_drug)
+summary(fit_inject)
+summary(fit_alcohol)
+summary(fit_smoking)
+summary(fit_sleep1)
+summary(fit_sleep2)
+# Wald test result
+# *** : GENDER, DRUG
+# * : MARRIED, INJECT
+# ns : ALCOHOL, SMOKING, SLEEP1, SLEEP2
+
+
+# bivariate fitting/analysis for continuous predictor variables
+fit_age <- glm(STD ~ AGE, data = data, family = binomial)
+fit_partners <- glm(STD ~ PARTNERS, data = data, family = binomial)
+summary(fit_age)
+summary(fit_partners)
+# Wald test result
+# ns : AGE, PARTNERS
+
+
+# bivariate fitting/analysis for categorical variables with multiple levels
+fit_intercept <- glm(STD ~ 1, data = data, family = binomial)  ## intercept-only model
+fit_race <- glm(STD ~ as.factor(RACE), data = data, family = binomial)
+fit_educ <- glm(STD ~ as.factor(EDUC), data = data, family = binomial)
+fit_income <- glm(STD ~ as.factor(INCOME), data = data, family = binomial)
+fit_condom <- glm(STD ~ as.factor(CONDOM), data = data, family = binomial)
+anova(fit_intercept, fit_race, test = "Chisq")
+anova(fit_intercept, fit_educ, test = "Chisq")
+anova(fit_intercept, fit_income, test = "Chisq")
+anova(fit_intercept, fit_condom, test = "Chisq")
+# LRT result
+# *** : RACE
+# * : EDUC
+# ns : INCOME, CONDOM
+
+```
+
+
+### Logistic Regression: Adjusted
+```{r}
+
+# fitting the model : forward selection procedure
+fit_1 <- glm(STD ~ GENDER + DRUG, data = data, family = binomial)
+summary(fit_1)
+# GENDER and DRUG significant : ***
+fit_2 <- glm(STD ~ GENDER + DRUG + as.factor(RACE), data = data, family = binomial)
+anova(fit_1, fit_2, test = "Chisq")
+# RACE significant : ***
+fit_3 <- glm(STD ~ GENDER + DRUG + as.factor(RACE) + as.factor(EDUC), data = data, family = binomial)
+anova(fit_2, fit_3, test = "Chisq")
+# EDUC significant : *
+fit_4 <- glm(STD ~ GENDER + DRUG + as.factor(RACE) + as.factor(EDUC) + MARRIED, data = data, family = binomial)
+summary(fit_4)
+# MARRIED "weakly" significant : .
+fit_5 <- glm(STD ~ GENDER + DRUG + as.factor(RACE) + as.factor(EDUC) + INJECT, data = data, family = binomial)
+summary(fit_5)
+# INJECT significant : *
+fit_6 <- glm(STD ~ GENDER + DRUG + as.factor(RACE) + as.factor(EDUC) + INJECT + MARRIED, data = data, family = binomial)
+summary(fit_6)
+# MARRIED non-significant
+
+
+# Hence, we tentatively adopt "fit_5" and test it further
+fit_7 <- glm(STD ~ GENDER + DRUG + as.factor(EDUC) + INJECT, data = data, family = binomial)
+anova(fit_7, fit_5, test = "Chisq")
+# RACE still significant : ***
+fit_8 <- glm(STD ~ GENDER + DRUG + as.factor(RACE) + INJECT, data = data, family = binomial)
+anova(fit_8, fit_5, test = "Chisq")
+# EDUC still significant : *
+# Therefore, we adopt "fit_5" as our final model
+
+```
+
+
+### Model Assessment
+```{r}
+# calculating c-index
+library(rms)
+data$prob_STD <- predict(fit_5, newdata = data, type = "resp")
+rcorr.cens(data$prob_STD, data$STD)
+# C-index for "fit_5" is about 0.68
+```
+
+

@@ -1,0 +1,225 @@
+**Final Project (Data Preparation)**
+=====================================================
+*Sangyoon Park / MATH 242*
+-----------------------------------------------------
+
+
+### Data Preparation
+
+```{r}
+
+library(foreign)
+
+
+# getting data
+sex <- read.xport("SXQ_E.XPT")
+demo <- read.xport("DEMO_E.XPT")
+alcohol <- read.xport("ALQ_E.XPT")
+drug <- read.xport("DUQ_E.XPT")
+smoking <- read.xport("SMQ_E.XPT")
+sleep <- read.xport("SLQ_E.XPT")
+
+
+# merging data
+all_1 <- merge(demo, sex, by = "SEQN")
+all_2 <- merge(all_1, alcohol, by = "SEQN")
+all_3 <- merge(all_2, drug, by = "SEQN")
+all_4 <- merge(all_3, smoking, by = "SEQN")
+all_5 <- merge(all_4, sleep, by = "SEQN")
+all <- subset(all_5, select = c("SEQN", "RIAGENDR", "RIDAGEYR", "RIDRETH1", "DMDEDUC2", "DMDMARTL", "INDFMIN2", "SXQ260", "SXQ265", "SXQ270", "SXQ272", "SXQ251", "SXQ101", "SXQ130", "SXD171", "SXQ410", "SXD031", "DUQ200", "DUQ240", "DUQ370", "SMQ020", "SLQ050", "SLQ060", "ALQ150"))
+
+
+# initializing new varibale STD
+all$STD <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$SXQ260) & all$SXQ260==1,]$STD <- 1
+all[!is.na(all$SXQ265) & all$SXQ265==1,]$STD <- 1
+all[!is.na(all$SXQ270) & all$SXQ270==1,]$STD <- 1
+all[!is.na(all$SXQ272) & all$SXQ272==1,]$STD <- 1
+all[!is.na(all$SXQ260) & all$SXQ260==2 & !is.na(all$SXQ265) & all$SXQ265==2 & !is.na(all$SXQ270) & all$SXQ270==2 & !is.na(all$SXQ272) & all$SXQ272==2,]$STD <- 0
+# There are 2962 observations available for STD info
+nrow(all[!is.na(all$STD),])
+
+
+# initializing new varibale CONDOM
+all$CONDOM <- NA
+# assigning values (always=2, sometimes=1, never=0)
+all[!is.na(all$SXQ251) & all$SXQ251==1,]$CONDOM <- 2
+all[!is.na(all$SXQ251) & all$SXQ251==2,]$CONDOM <- 1
+all[!is.na(all$SXQ251) & all$SXQ251==3,]$CONDOM <- 1
+all[!is.na(all$SXQ251) & all$SXQ251==4,]$CONDOM <- 1
+all[!is.na(all$SXQ251) & all$SXQ251==5,]$CONDOM <- 0
+# There are 2363 observations available for condom use info
+nrow(all[!is.na(all$CONDOM),])
+
+
+# initializing new varibale PARTNERS
+all$PARTNERS <- NA
+# assigning values to respondents
+#################################
+## female: male partners
+all[!is.na(all$SXQ101) & all$SXQ101 < 10000,]$PARTNERS <- all[!is.na(all$SXQ101) & all$SXQ101 < 10000,]$SXQ101
+## female: female partners
+all[!is.na(all$SXQ130) & all$SXQ130 < 10000,]$PARTNERS <- all[!is.na(all$SXQ130) & all$SXQ130 < 10000,]$SXQ130
+## for females with bisexual experience
+all[!is.na(all$SXQ101) & !is.na(all$SXQ130) & all$SXQ101 < 10000 & all$SXQ130 < 10000,]$PARTNERS <- all[!is.na(all$SXQ101) & !is.na(all$SXQ130) & all$SXQ101 < 10000 & all$SXQ130 < 10000,]$SXQ101 + all[!is.na(all$SXQ101) & !is.na(all$SXQ130) & all$SXQ101 < 10000 & all$SXQ130 < 10000,]$SXQ130
+#################################
+## male: female partners
+all[!is.na(all$SXD171) & all$SXD171 < 10000,]$PARTNERS <- all[!is.na(all$SXD171) & all$SXD171 < 10000,]$SXD171
+## male: female partners
+all[!is.na(all$SXQ410) & all$SXQ410 < 10000,]$PARTNERS <- all[!is.na(all$SXQ410) & all$SXQ410 < 10000,]$SXQ410
+## for males with bisexual experience
+all[!is.na(all$SXD171) & !is.na(all$SXQ410) & all$SXD171 < 10000 & all$SXQ410 < 10000,]$PARTNERS <- all[!is.na(all$SXD171) & !is.na(all$SXQ410) & all$SXD171 < 10000 & all$SXQ410 < 10000,]$SXD171 + all[!is.na(all$SXD171) & !is.na(all$SXQ410) & all$SXD171 < 10000 & all$SXQ410 < 10000,]$SXQ410
+#################################
+# There are 3656 observations available for condom info
+nrow(all[!is.na(all$PARTNERS),])
+
+
+# initializing new varibale DRUG
+all$DRUG <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$DUQ200) & all$DUQ200==1,]$DRUG <- 1
+all[!is.na(all$DUQ240) & all$DUQ240==1,]$DRUG <- 1
+all[!is.na(all$DUQ200) & all$DUQ200==2 & !is.na(all$DUQ240) & all$DUQ240==2,]$DRUG <- 0
+# There are 3300 observations available for drug use info
+nrow(all[!is.na(all$DRUG),])
+
+
+# initializing new varibale INJECT
+all$INJECT <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$DUQ370) & all$DUQ370==1,]$INJECT <- 1
+all[!is.na(all$DUQ370) & all$DUQ370==2,]$INJECT <- 0
+# There are 4117 observations available for drug injection info
+nrow(all[!is.na(all$INJECT),])
+
+
+# initializing new varibale ALCOHOL
+all$ALCOHOL <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$ALQ150) & all$ALQ150==1,]$ALCOHOL <- 1
+all[!is.na(all$ALQ150) & all$ALQ150==2,]$ALCOHOL <- 0
+# There are 3689 observations available for heavy drinking experience info
+nrow(all[!is.na(all$ALCOHOL),])
+
+
+# initializing new varibale SMOKING
+all$SMOKING <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$SMQ020) & all$SMQ020==1,]$SMOKING <- 1
+all[!is.na(all$SMQ020) & all$SMQ020==2,]$SMOKING <- 0
+# There are 4621 observations available for smoking experience info
+nrow(all[!is.na(all$SMOKING),])
+
+
+# initializing new varibale SLEEP1
+all$SLEEP1 <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$SLQ050) & all$SLQ050==1,]$SLEEP1 <- 1
+all[!is.na(all$SLQ050) & all$SLQ050==2,]$SLEEP1 <- 0
+# There are 4622 observations available for sleep trouble experience info
+nrow(all[!is.na(all$SLEEP1),])
+
+
+# initializing new varibale SLEEP2
+all$SLEEP2 <- NA
+# assigning values (yes=1, no=0)
+all[!is.na(all$SLQ060) & all$SLQ060==1,]$SLEEP2 <- 1
+all[!is.na(all$SLQ060) & all$SLQ060==2,]$SLEEP2 <- 0
+# There are 4614 observations available for sleep disorder info
+nrow(all[!is.na(all$SLEEP2),])
+
+
+# initializing new varibale GENDER
+all$GENDER <- NA
+# assigning values (female=1, male=0)
+all[!is.na(all$RIAGENDR) & all$RIAGENDR==2,]$GENDER <- 1
+all[!is.na(all$RIAGENDR) & all$RIAGENDR==1,]$GENDER <- 0
+# There are 4625 observations available for gender info
+nrow(all[!is.na(all$GENDER),])
+
+
+# initializing new varibale AGE
+all$AGE <- NA
+# assigning values (female=1, male=0)
+all[!is.na(all$RIDAGEYR),]$AGE <- all[!is.na(all$RIDAGEYR),]$RIDAGEYR
+# There are 4625 observations available for age info
+nrow(all[!is.na(all$AGE),])
+
+
+# initializing new varibale RACE
+all$RACE <- NA
+# assigning values (white=0, black=1, hispanic=2, other=3)
+all[!is.na(all$RIDRETH1) & all$RIDRETH1==3,]$RACE <- 0
+all[!is.na(all$RIDRETH1) & all$RIDRETH1==4,]$RACE <- 1
+all[!is.na(all$RIDRETH1) & all$RIDRETH1==1,]$RACE <- 2
+all[!is.na(all$RIDRETH1) & all$RIDRETH1==2,]$RACE <- 2
+all[!is.na(all$RIDRETH1) & all$RIDRETH1==5,]$RACE <- 3
+# There are 4625 observations available for race info
+nrow(all[!is.na(all$RACE),])
+
+
+# initializing new varibale EDUC
+all$EDUC <- NA
+# assigning values 
+# 0 = less than 9th grade
+# 1 = 9-11th grade (including 12th grade with no diploma)
+# 2 = high school grad / GED or equivalent
+# 3 = some college or AA degree
+# 4 = college graduate or above
+all[!is.na(all$DMDEDUC2) & all$DMDEDUC2==1,]$EDUC <- 0
+all[!is.na(all$DMDEDUC2) & all$DMDEDUC2==2,]$EDUC <- 1
+all[!is.na(all$DMDEDUC2) & all$DMDEDUC2==3,]$EDUC <- 2
+all[!is.na(all$DMDEDUC2) & all$DMDEDUC2==4,]$EDUC <- 3
+all[!is.na(all$DMDEDUC2) & all$DMDEDUC2==5,]$EDUC <- 4
+# There are 4623 observations available for education info
+nrow(all[!is.na(all$EDUC),])
+
+
+# initializing new varibale MARRIED
+all$MARRIED <- NA
+# assigning values (married=1, not married=0)
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==1,]$MARRIED <- 1
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==2,]$MARRIED <- 0
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==3,]$MARRIED <- 0
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==4,]$MARRIED <- 0
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==5,]$MARRIED <- 0
+all[!is.na(all$DMDMARTL) & all$DMDMARTL==6,]$MARRIED <- 0
+# There are 4623 observations available for marital status info
+nrow(all[!is.na(all$MARRIED),])
+
+
+# initializing new varibale INCOME
+all$INCOME <- NA
+# assigning values 
+# 0 = poverty level
+# 1 = working class
+# 2 = lower middle class
+# 3 = upper middle class
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==1,]$INCOME <- 0
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==2,]$INCOME <- 0
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==3,]$INCOME <- 0
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==4,]$INCOME <- 0
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==13,]$INCOME <- 0
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==5,]$INCOME <- 1
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==6,]$INCOME <- 1
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==12,]$INCOME <- 1  ## working class assumed
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==7,]$INCOME <- 2
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==8,]$INCOME <- 2
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==9,]$INCOME <- 2
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==10,]$INCOME <- 2
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==14,]$INCOME <- 3
+all[!is.na(all$INDFMIN2) & all$INDFMIN2==15,]$INCOME <- 3
+# There are 4427 observations available for family income info
+nrow(all[!is.na(all$INCOME),])
+
+
+# subsetting dataset to use
+data <- subset(all, select = c("SEQN", "GENDER", "AGE", "RACE", "EDUC", "MARRIED", "INCOME", "STD", "CONDOM", "PARTNERS", "DRUG", "INJECT", "ALCOHOL", "SMOKING", "SLEEP1", "SLEEP2"))
+data_complete <- data[complete.cases(data),]
+
+
+# saving the dataset
+write.csv(data_complete, file = "final_data_PARK.csv")
+```
+
